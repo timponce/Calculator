@@ -30,7 +30,10 @@ body {
     border-radius: 8px;
     height: 6rem;
     margin: 1.5rem 2rem;
+    padding: 0.5rem;
     background-color: #CED4DA;
+    font-family: "Roboto Mono", monospace;
+    font-size: 32px;
 }
 
 .calc-buttons {
@@ -41,7 +44,9 @@ body {
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
 }
 
-.button {
+button {
+    font-size: 24px;
+    font-family: "Roboto Slab", serif;
     text-align: center;
     border: 1px solid black;
     height: 4rem;
