@@ -53,11 +53,18 @@ button {
     line-height: 4rem;
 }
 
+button:hover,
+#decimal:hover,
+#equals:hover {
+    background-color: red;
+    cursor: pointer;
+}
+
 .number {
     background-color: #CED4DA;
 }
 
-.function {
+.operator {
     background-color: #6C757D;
 }
 

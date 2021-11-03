@@ -1,4 +1,5 @@
 const calcDisplay = document.getElementById('calc-display');
+const numberKeys = document.querySelectorAll('[data-value]')
 
 function waitingForInput() {
     let min = 1,
@@ -11,9 +12,19 @@ function waitingForInput() {
     setTimeout(waitingForInput, rand * 1000);
   };
 
-waitingForInput();
+// waitingForInput(); commenting out for now until all built
 //Need function to clear this and stop this when a button is pressed. And then to reinitiate after being left alone for x seconds
 
+numberKeys.forEach(numberKeys => {
+    numberKeys.addEventListener('click', e => {
+        const pressedKey = numberKeys.dataset.value
+        storeKeySelection(pressedKey)
+    })
+})
+
+function storeKeySelection(value) {
+    console.log(value)
+}
 
 const add = function(a,b) {
     return a + b;
