@@ -74,11 +74,13 @@ button:hover,
     cursor: pointer;
 }
 
-.number {
+[data-type='number'] {
     background-color: #CED4DA;
 }
 
-.operator {
+[data-type='operator'],
+[data-type='clear'],
+[data-type='change-sign'] {
     background-color: #6C757D;
 }
 

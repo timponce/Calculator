@@ -1,5 +1,7 @@
 const calcDisplayTop = document.getElementById('calc-display-top');
-const keys = document.querySelectorAll('[data-value]');
+const calcDisplayBottom = document.getElementById('calc-display-bottom');
+const keysValue = document.querySelectorAll('[data-value]');
+const keysType = document.querySelectorAll('[data-type]');
 const clearKey = document.getElementById('clear');
 const operators = {
     divide: '/',
@@ -7,6 +9,7 @@ const operators = {
     minus: '-',
     plus: '+',
 }
+const operatorValues = Object.values(operators);
 
 function waitingForInput() {
     let min = 1,
@@ -23,35 +26,37 @@ function waitingForInput() {
 // Need function to clear this and stop this when a button is pressed. And then to reinitiate after being left alone for x seconds
 
 
-
-keys.forEach(keys => {
+keysType.forEach(keys => {
     keys.addEventListener('click', e => {
-        const pressedKey = keys.dataset.value
-        storeKeySelection(pressedKey)
+        const pressedKeyValue = keys.dataset.value;
+        const pressedKeyType = keys.dataset.type;
+        if (keys.dataset.type == 'operator') {
+            storeOperator(pressedKeyValue);
+        } else if (keys.dataset.type == 'number') {
+            storeKeySelection(pressedKeyValue)
+        } else if (keys.dataset.type == 'clear') {
+            clear();
+        }
     })
 })
 
+function storeOperator(value) {
+    if ((calcDisplayBottom.textContent != '') && 
+    (calcDisplayTop.textContent == '')) {
+        calcDisplayTop.textContent = calcDisplayBottom.textContent;
+        calcDisplayTop.textContent += ' ' + operators[value] + ' ';
+        calcDisplayBottom.textContent = '';
+    } else if ((calcDisplayBottom.textContent == '') && 
+    (calcDisplayTop.textContent != '')) {
+            calcDisplayTop.textContent = calcDisplayTop.textContent.substring(calcDisplayTop.textContent.length-2, '') + operators[value] + ' ';
+        }
+};
+
+
 function storeKeySelection(value) {
-    console.log(value)
     if (calcDisplayTop.textContent.includes('HELL0')) {
         calcDisplayTop.textContent = '';
-    }
-    if (value >= 0 && value <= 9) {
-        calcDisplayTop.textContent += value;
-    } else if (value === 'equals') {
-        calcDisplayTop.textContent += '=';
-        operate();
-    } else if (value === 'fun') {
-        calcDisplayTop.textContent = '5318008';
-        setTimeout(clear, 1500);
-    } else if (value === 'decimal') {
-        console.log('will figure out decimal later')
-    } else if (value === 'clear') {
-        clear();
-    } else {
-        storeFirstNumAndOperator();
-        calcDisplayTop.textContent += operators[value];
-    }
+    } calcDisplayBottom.textContent += value;
 }
 
 const add = function(a,b) {
@@ -84,12 +89,8 @@ const percent = function(a,b) {
 
 const clear = function() {
     calcDisplayTop.textContent = '';
-    console.log('cleared display');
+    calcDisplayBottom.textContent = '';
 };
-
-const storeFirstNumAndOperator = function() {
-    console.log('storefirst working')
-}
 
 const operate = function() {
 
