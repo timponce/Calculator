@@ -39,7 +39,7 @@ body {
     font-size: 28px;
 }
 
-#calc-display-top {
+#calc-display-top-container {
     flex: auto;
     display: flex;
     column-gap: 0.5rem;
@@ -51,6 +51,9 @@ body {
     flex: auto;
     height: 3rem;
     align-self: flex-end;
+    display: flex;
+    column-gap: 0.5rem;
+    flex-wrap: nowrap;
 }
 
 .calc-buttons {

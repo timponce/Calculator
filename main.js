@@ -1,6 +1,5 @@
-const displaySign = document.getElementById('calc-display-top-sign')
-const displayResult = document.getElementById('calc-display-top-number')
-const displayOperator = document.getElementById('calc-display-top-operator')
+const displayResult = document.getElementById('calc-display-top-number');
+const displayOperator = document.getElementById('calc-display-top-operator');
 const displayBottom = document.getElementById('calc-display-bottom');
 const keysValue = document.querySelectorAll('[data-value]');
 const keysType = document.querySelectorAll('[data-type]');
@@ -37,8 +36,10 @@ keysType.forEach(keys => {
             storeOperator(pressedKeyValue);
         } else if (keys.dataset.type == 'number') {
             storeKeySelection(pressedKeyValue)
+        } else if (keys.dataset.type == 'decimal') {
+            storeDecimal(pressedKeyValue);
         } else if (keys.dataset.type == 'clear') {
-            clear();
+            clearAll();
         } else if (keys.dataset.type == 'equals') {
             operate();
         } else if (keys.dataset.type == 'change-sign') {
@@ -60,17 +61,17 @@ function storeOperator(value) {
         console.log('a');
     }
     else if ((bottom != '') && (top == '')) {
+        clearAll();
         displayResult.textContent = bottom;
         displayOperator.textContent += operators[value];
-        displayBottom.textContent = '';
         console.log('b');
     //fix below. if there are number in top, this fails 
     } else if ((bottom == '') && (top != '')) {
             displayOperator.textContent = operators[value];
             console.log('c');
     } else if ((bottom != '') && (top != '')) {
+        clearAll();
         operate();
-        displayBottom.textContent = '';
         displayOperator.textContent += operators[value];
         console.log('d');
     }
@@ -82,6 +83,12 @@ function storeKeySelection(value) {
         displayResult.textContent = '';
     } displayBottom.textContent += value;
 }
+
+function storeDecimal(value) {
+    if ((displayBottom.textContent != '') && !(displayBottom.textContent.includes('.'))) {
+        displayBottom.textContent += '.';
+    }
+};
 
 const add = function(a,b) {
     return +a + +b;
@@ -108,24 +115,29 @@ const percent = function(a,b) {
 };
 
 const changeSign = function(sign) {
-    displaySign.textContent == '' ? displaySign.textContent = '-' :
-    displaySign.textContent == '-' ? displaySign.textContent = '+' :
-    displaySign.textContent == '+'? displaySign.textContent = '-' :
-    displaySign.textContent = 'error';
+    if (displayBottom.textContent != '') {
+        displayBottom.textContent.includes('-') ? displayBottom.textContent = displayBottom.textContent.substring(1) :
+        displayBottom.textContent = '-' + displayBottom.textContent;
+    }
 }
 
-const clear = function() {
-    displaySign.textContent = '';
+const clearAll = function() {
     displayResult.textContent = '';
     displayOperator.textContent = '';
     displayBottom.textContent = '';
 };
 
+
+
+const round = function() {
+
+}
+
 const operate = function() {
     let firstNumber = displayResult.textContent;
     let operator = displayOperator.textContent;
     let secondNumber = displayBottom.textContent;
-    clear();
+    clearAll();
     switch (operator) {
         case '/':
             displayResult.textContent = divide(firstNumber, secondNumber);
