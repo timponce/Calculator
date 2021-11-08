@@ -71,6 +71,7 @@ button {
     border: 1px solid black;
     height: 4rem;
     line-height: 4rem;
+    text-decoration: none;
 }
 
 button:hover,
