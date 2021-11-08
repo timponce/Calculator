@@ -41,6 +41,9 @@ body {
 
 #calc-display-top {
     flex: auto;
+    display: flex;
+    column-gap: 0.5rem;
+    flex-wrap: nowrap;
     height: 3rem;
 }
 
