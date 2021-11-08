@@ -22,7 +22,7 @@ function waitingForInput() {
     setTimeout(waitingForInput, rand * 1000);
   };
 
-// waitingForInput(); commenting out for now until all built
+// waitingForInput();
 // Need function to clear this and stop this when a button is pressed. And then to reinitiate after being left alone for x seconds
 
 
@@ -36,20 +36,26 @@ keysType.forEach(keys => {
             storeKeySelection(pressedKeyValue)
         } else if (keys.dataset.type == 'clear') {
             clear();
-        }
+        } else if (keys.dataset.type == 'equals')
+            operate();
     })
 })
 
 function storeOperator(value) {
-    if ((calcDisplayBottom.textContent != '') && 
-    (calcDisplayTop.textContent == '')) {
-        calcDisplayTop.textContent = calcDisplayBottom.textContent;
+    let top = calcDisplayTop.textContent;
+    let bottom = calcDisplayBottom.textContent;
+    if ((bottom != '') && (top == '')) {
+        calcDisplayTop.textContent = bottom;
         calcDisplayTop.textContent += ' ' + operators[value] + ' ';
         calcDisplayBottom.textContent = '';
-    } else if ((calcDisplayBottom.textContent == '') && 
-    (calcDisplayTop.textContent != '')) {
-            calcDisplayTop.textContent = calcDisplayTop.textContent.substring(calcDisplayTop.textContent.length-2, '') + operators[value] + ' ';
-        }
+    //fix below. if there are number in top, this fails 
+    } else if ((bottom == '') && (top != '')) {
+            calcDisplayTop.textContent = top.substring(top.length-2, '') + operators[value] + ' ';
+    } else if ((bottom != '') && (top != '')) {
+        operate();
+        calcDisplayBottom.textContent = '';
+        calcDisplayTop.textContent += ' ' + operators[value] + ' ';
+    }
 };
 
 
@@ -60,7 +66,7 @@ function storeKeySelection(value) {
 }
 
 const add = function(a,b) {
-    return a + b;
+    return +a + +b;
 };
 
 const subtract = function(a,b) {
@@ -93,5 +99,26 @@ const clear = function() {
 };
 
 const operate = function() {
-
+    let firstNumberAndOperator = calcDisplayTop.textContent;
+    let operatorAndSpaces = firstNumberAndOperator.substring(firstNumberAndOperator.length-3);
+    let operator = operatorAndSpaces.replace(/ /g, '');
+    let firstNumber = firstNumberAndOperator.replace(operatorAndSpaces, '');
+    let secondNumber = calcDisplayBottom.textContent;
+    calcDisplayBottom.textContent = '';
+    switch (operator) {
+        case '/':
+            calcDisplayTop.textContent = divide(firstNumber, secondNumber);
+            break;
+        case 'x':
+            calcDisplayTop.textContent = multiply(firstNumber, secondNumber);
+            break;
+        case '-':
+            calcDisplayTop.textContent = subtract(firstNumber, secondNumber);
+            break;
+        case '+':
+            calcDisplayTop.textContent = add(firstNumber, secondNumber);
+            break;
+        default:
+            console.log(operator);
+    }
 }
