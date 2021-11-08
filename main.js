@@ -13,21 +13,6 @@ const operators = {
 }
 const operatorValues = Object.values(operators);
 
-function waitingForInput() {
-    let min = 1,
-      max = 3;
-    let rand = Math.floor(Math.random() * (max - min + 1) + min); //Generate Random number between 1 - 3
-    console.log('Wait for ' + rand + ' seconds');
-    (rand > 2) ? 
-    displayResult.textContent = 'HELL0 (◕‿◕✿)' :
-    displayResult.textContent = 'HELL0 (◠‿◠✿)';
-    setTimeout(waitingForInput, rand * 1000);
-  };
-
-// waitingForInput();
-// Need function to clear this and stop this when a button is pressed. And then to reinitiate after being left alone for x seconds
-
-
 keysType.forEach(keys => {
     keys.addEventListener('click', e => {
         const pressedKeyValue = keys.dataset.value;
@@ -52,9 +37,6 @@ function storeOperator(value) {
     let top = displayResult.textContent;
     let bottom = displayBottom.textContent;
     if (top.includes('HELL0')) {
-        displayResult.textContent = '';
-        storeOperator(value)
-        console.log(value);
     }
     else if ((bottom == '') && (top == '')) {
         displayOperator.textContent = '';
@@ -65,23 +47,23 @@ function storeOperator(value) {
         displayResult.textContent = bottom;
         displayOperator.textContent += operators[value];
         console.log('b');
-    //fix below. if there are number in top, this fails 
-    } else if ((bottom == '') && (top != '')) {
+    } else if ((bottom == '') && (top.match(/[0-9]/) )) {
             displayOperator.textContent = operators[value];
             console.log('c');
-    } else if ((bottom != '') && (top != '')) {
-        clearAll();
+    } else if ((bottom != '') && (top.match(/[0-9]/))) {
         operate();
         displayOperator.textContent += operators[value];
         console.log('d');
     }
 };
 
-
 function storeKeySelection(value) {
     if (displayResult.textContent.includes('HELL0')) {
-        displayResult.textContent = '';
-    } displayBottom.textContent += value;
+        clearAll();
+        displayBottom.textContent += value;
+    } else if (displayBottom.textContent.length < 16) {
+        displayBottom.textContent += value;
+    }
 }
 
 function storeDecimal(value) {
@@ -103,8 +85,8 @@ const multiply = function(a,b) {
 };
 
 const divide = function(a,b) {
-    if (b == 0) {
-        displayResult.textContent = 'ERROR (¤﹏¤)';
+    if (b == '0') {
+        return 'ERROR (¤﹏¤)';
     } else {
     return a / b;
     }
@@ -126,8 +108,6 @@ const clearAll = function() {
     displayOperator.textContent = '';
     displayBottom.textContent = '';
 };
-
-
 
 const round = function() {
 
