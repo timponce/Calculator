@@ -13,7 +13,7 @@ body {
 #container {
     width: 24rem;
     margin: 0rem auto;
-    /* margin-top: 4rem; */
+    margin-top: 4rem;
 }
 
 #calc-body {
