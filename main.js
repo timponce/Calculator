@@ -10,6 +10,7 @@ const operators = {
     multiply: 'x',
     minus: '-',
     plus: '+',
+    percent: '%',
 }
 const operatorValues = Object.values(operators);
 
@@ -38,25 +39,40 @@ keysType.forEach(keys => {
             storeKeySelection(pressedKeyValue)
         } else if (keys.dataset.type == 'clear') {
             clear();
-        } else if (keys.dataset.type == 'equals')
+        } else if (keys.dataset.type == 'equals') {
             operate();
+        } else if (keys.dataset.type == 'change-sign') {
+            changeSign();
+        }
     })
 })
 
 function storeOperator(value) {
     let top = displayResult.textContent;
     let bottom = displayBottom.textContent;
-    if ((bottom != '') && (top == '')) {
+    if (top.includes('HELL0')) {
+        displayResult.textContent = '';
+        storeOperator(value)
+        console.log(value);
+    }
+    else if ((bottom == '') && (top == '')) {
+        displayOperator.textContent = '';
+        console.log('a');
+    }
+    else if ((bottom != '') && (top == '')) {
         displayResult.textContent = bottom;
-        displayResult.textContent += ' ' + operators[value] + ' ';
+        displayOperator.textContent += operators[value];
         displayBottom.textContent = '';
+        console.log('b');
     //fix below. if there are number in top, this fails 
     } else if ((bottom == '') && (top != '')) {
-            displayResult.textContent = top.substring(top.length-2, '') + operators[value] + ' ';
+            displayOperator.textContent = operators[value];
+            console.log('c');
     } else if ((bottom != '') && (top != '')) {
         operate();
         displayBottom.textContent = '';
-        displayResult.textContent += ' ' + operators[value] + ' ';
+        displayOperator.textContent += operators[value];
+        console.log('d');
     }
 };
 
@@ -87,26 +103,29 @@ const divide = function(a,b) {
     }
 };
 
-// const changeSign = function(a,b) {
-//     return 
-// }
-
 const percent = function(a,b) {
-    return (a/100) * b;
+    return (b/100) * a;
 };
 
+const changeSign = function(sign) {
+    displaySign.textContent == '' ? displaySign.textContent = '-' :
+    displaySign.textContent == '-' ? displaySign.textContent = '+' :
+    displaySign.textContent == '+'? displaySign.textContent = '-' :
+    displaySign.textContent = 'error';
+}
+
 const clear = function() {
+    displaySign.textContent = '';
     displayResult.textContent = '';
+    displayOperator.textContent = '';
     displayBottom.textContent = '';
 };
 
 const operate = function() {
-    let firstNumberAndOperator = displayResult.textContent;
-    let operatorAndSpaces = firstNumberAndOperator.substring(firstNumberAndOperator.length-3);
-    let operator = operatorAndSpaces.replace(/ /g, '');
-    let firstNumber = firstNumberAndOperator.replace(operatorAndSpaces, '');
+    let firstNumber = displayResult.textContent;
+    let operator = displayOperator.textContent;
     let secondNumber = displayBottom.textContent;
-    displayBottom.textContent = '';
+    clear();
     switch (operator) {
         case '/':
             displayResult.textContent = divide(firstNumber, secondNumber);
@@ -120,7 +139,9 @@ const operate = function() {
         case '+':
             displayResult.textContent = add(firstNumber, secondNumber);
             break;
+        case '%':
+            displayResult.textContent = percent(firstNumber, secondNumber);
+            break;
         default:
-            console.log(operator);
     }
 }
